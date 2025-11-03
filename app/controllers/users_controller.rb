@@ -2,11 +2,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
     allow_unauthenticated_access only: %i[ new create ]
 
-  # GET /users or /users.json
-  def index
-    @users = User.all
-  end
-
   # GET /users/1 or /users/1.json
   def show
   end
@@ -20,18 +15,15 @@ class UsersController < ApplicationController
   def edit
   end
 
-  # POST /users or /users.json
+  # POST /users
   def create
     @user = User.new(user_params)
 
-    respond_to do |format|
-      if @user.save
-        format.html { redirect_to @user, notice: "User was successfully created." }
-        format.json { render :show, status: :created, location: @user }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
+    if @user.save
+      start_new_session_for @user
+      redirect_to @user, notice: "Welcome! You are signed up!"
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -53,7 +45,7 @@ class UsersController < ApplicationController
     @user.destroy!
 
     respond_to do |format|
-      format.html { redirect_to users_path, notice: "User was successfully destroyed.", status: :see_other }
+      format.html { redirect_to new_user_path, notice: "User was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
@@ -66,6 +58,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :email_address, :string, :password, :password_confirmation ])
+      params.expect(user: [ :email_address, :password, :password_confirmation ])
     end
 end

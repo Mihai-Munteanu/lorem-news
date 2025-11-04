@@ -10,3 +10,10 @@
         <%= button_to "Destroy this post", @post, method: :delete %>
     <% end %>
 </div>
+
+
+<% if Current.user.present? %>
+    <%= render "comments/form", comment: @post.comments.new %>
+<% end %>
+
+<%= render @post.comments %>

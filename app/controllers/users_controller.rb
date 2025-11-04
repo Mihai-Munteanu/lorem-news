@@ -1,9 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
-    allow_unauthenticated_access only: %i[ new create ]
+  allow_unauthenticated_access only: %i[ show new create ]
 
   # GET /users/1 or /users/1.json
   def show
+    @user = User.find(params.expect(:id))
   end
 
   # GET /users/new
@@ -44,16 +45,13 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to new_user_path, notice: "User was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to root_path, notice: "User was successfully destroyed.", status: :see_other
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params.expect(:id))
+      @user = Current.user || User.find(params.expect(:id))
     end
 
     # Only allow a list of trusted parameters through.

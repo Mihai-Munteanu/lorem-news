@@ -11,33 +11,25 @@ class CommentsController < ApplicationController
     @comment = @post.comments.new(comment_params.merge(user: Current.user))
 
     if @comment.save
-      redirect_to @post, notice: "Comment was successfully created."
+      redirect_to @comment.post, notice: "Comment was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      redirect_to @post, alert: @comment.errors.full_messages.join(", ")
     end
   end
 
   # PATCH/PUT /comments/1 or /comments/1.json
   def update
-    respond_to do |format|
-      if @comment.update(comment_params)
-        format.html { redirect_to @comment, notice: "Comment was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @comment }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+    if @comment.update(comment_params)
+      redirect_to @comment.post, notice: "Comment was successfully updated."
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /comments/1 or /comments/1.json
   def destroy
     @comment.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to comments_path, notice: "Comment was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to @comment.post, notice: "Comment was successfully destroyed.", status: :see_other
   end
 
   private

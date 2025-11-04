@@ -18,7 +18,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     test "shouldn't define create" do
       assert_difference("Post.count", 0) do
-        post posts_url, params: { post: { title: "New", body: "body" } }
+        post posts_url, params: { post: { title: "new post", body: "body" } }
       end
 
       assert_redirected_to new_session_url
@@ -35,7 +35,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "shouldn't define update" do
-      patch post_url(@post), params: { post: { title: "Upd", body: @post.body } }
+      patch post_url(@post), params: { post: { title: @post.title + "_updated", body: @post.body } }
       assert_redirected_to new_session_url
     end
 
@@ -66,7 +66,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     test "should create post" do
       assert_difference("Post.count", 1) do
-        post posts_url, params: { post: { title: "New", body: "body" } }
+        post posts_url, params: { post: { title: "new post", body: "body" } }
       end
 
       assert_redirected_to post_url(Post.last)
@@ -83,7 +83,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "should update post" do
-      patch post_url(@post), params: { post: { title: "Upd", body: @post.body } }
+      patch post_url(@post), params: { post: { title: @post.title + "_updated", body: @post.body } }
       assert_redirected_to post_url(@post.reload)
     end
 

@@ -68,7 +68,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     test "should create comment" do
       assert_difference("Comment.count", 1) do
-        post post_comments_url(@comment.post), params: { comment: { body: "New" } }
+        post post_comments_url(@comment.post), params: { comment: { body: "new comment" } }
       end
 
       assert_redirected_to post_url(@comment.post)
@@ -85,7 +85,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
     end
 
     test "should update comment" do
-      patch comment_url(@comment), params: { comment: { body: "Upd" } }
+      patch comment_url(@comment), params: { comment: { body: @comment.body + "_updated" } }
       assert_redirected_to post_url(@comment.post)
     end
 

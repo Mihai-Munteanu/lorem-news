@@ -1,17 +1,13 @@
-<div id="<%= dom_id post %>">
-  <div>
-    <strong>User:</strong>
-    <%= post.user_id %>
-  </div>
+<%
+  if controller_name == "posts" && action_name == "show"
+    hlevel = :h1
+    content = post.title
+  else
+    hlevel = :h2
+    content = link_to post.title, post
+  end
+%>
 
-  <div>
-    <strong>Title:</strong>
-    <%= post.title %>
-  </div>
+<%= tag.send(hlevel, content, class: "font-semibold") %>
 
-  <div>
-    <strong>Body:</strong>
-    <%= post.body %>
-  </div>
-
-</div>
+<%= render "posts/metadata", post: post %>

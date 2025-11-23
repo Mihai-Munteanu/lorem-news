@@ -5,3 +5,5 @@ class AddTagsToPosts < ActiveRecord::Migration[8.1]
   end
 end
 
+
+
